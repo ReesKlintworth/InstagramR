@@ -5,6 +5,7 @@
 # Packages
 require(httpuv)
 require(httr)
+require(rCharts)
 require(rjson)
 require(RCurl)
 
@@ -36,4 +37,16 @@ user_profile <- user_info$data[[1]]
 user_id <- user_profile$id
 
 recent_url = paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?access_token=", token)
-recent_posts <- fromJSON(getURL(recent_url), unexpected.escape="keep")
+recent_posts <- fromJSON(getURL(recent_url), unexpected.escape="keep")$data
+
+likes_comments_df = data.frame( number=1:length(recent_posts))
+
+for (i in 1:length(recent_posts))
+{
+  likes_comments_df$comments[i] = recent_posts[[i]]$comments$count
+  likes_comments_df$likes[i] = recent_posts[[i]]$likes$count
+  likes_comments_df$date[i] <- toString(as.POSIXct(as.numeric(recent_posts[[i]]$created_time), origin="1970-01-01"))
+}
+
+m1 <- mPlot(x = "date", y = c("likes", "comments"), type = "Line", data = likes_comments_df)
+print(m1)
