@@ -48,5 +48,10 @@ for (i in 1:length(recent_posts))
   likes_comments_df$date[i] <- toString(as.POSIXct(as.numeric(recent_posts[[i]]$created_time), origin="1970-01-01"))
 }
 
-m1 <- mPlot(x = "date", y = c("likes", "comments"), type = "Line", data = likes_comments_df)
-print(m1)
+#m1 <- mPlot(x = "date", y = c("likes", "comments"), type = "Line", data = likes_comments_df)
+
+h1 <- Highcharts$new()
+h1$chart(type="spline")
+h1$series(data = likes_comments_df$likes)
+h1$series(data = likes_comments_df$comments)
+print(h1)
