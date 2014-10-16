@@ -36,7 +36,7 @@ user_profile <- user_info$data[[1]]
 
 user_id <- user_profile$id
 
-recent_url = paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?access_token=", token)
+recent_url = paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?access_token=", token, "&count=70")
 recent_posts <- fromJSON(getURL(recent_url), unexpected.escape="keep")$data
 
 likes_comments_df = data.frame( number=1:length(recent_posts))

@@ -28,8 +28,14 @@ shinyServer(function(input, output){
     user_profile <- user_info$data[[1]]
   
     user_id <- user_profile$id
+    
+    picture_number <- input$picture_number
+    if (picture_number > 33)
+    {
+      picture_number <- 33
+    }
   
-    recent_url = paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?access_token=", token)
+    recent_url = paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?client_id=", client_id, "&count=", picture_number)
     recent_posts <- fromJSON(getURL(recent_url), unexpected.escape="keep")$data
     
     likes_comments_df = data.frame( number=1:length(recent_posts))
@@ -46,7 +52,7 @@ shinyServer(function(input, output){
     h1$set(dom="plot")
     h1$chart(type="spline")
     h1$title(text="Likes and Comments")
-    h1$subtitle(text="20 Most Recent Posts")
+    h1$subtitle(text=paste0(picture_number, " Most Recent Posts"))
     h1$series(data=likes_comments_df$likes,name="Likes")
     h1$series(data=likes_comments_df$comments,name="Comments")
     
