@@ -13,8 +13,7 @@ shinyServer(function(input, output){
   
   instagram <- oauth_endpoint(
     authorize="https://api.instagram.com/oauth/authorize",
-    access="https://api.instagram.com/oauth/access_token",
-    is_interactive=TRUE)
+    access="https://api.instagram.com/oauth/access_token",)
   my_app <- oauth_app(app_name, client_id, client_secret)
   
   ig_oauth <- oauth2.0_token(instagram, my_app, scope="basic",  type="application/x-www-form-urlencoded", cache=FALSE)
