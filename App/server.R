@@ -36,7 +36,7 @@ shinyServer(function(input, output){
     }
   
     recent_url = paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?client_id=", client_id, "&count=", picture_number)
-    recent_posts <- fromJSON(getURL(recent_url), unexpected.escape="keep")$data
+    recent_posts <- rev(fromJSON(getURL(recent_url), unexpected.escape="keep")$data)
     
     likes_comments_df = data.frame( number=1:length(recent_posts))
     
@@ -55,6 +55,8 @@ shinyServer(function(input, output){
     h1$subtitle(text=paste0(picture_number, " Most Recent Posts"))
     h1$series(data=likes_comments_df$likes,name="Likes")
     h1$series(data=likes_comments_df$comments,name="Comments")
+    h1$yAxis(title = list(text="Number of Interactions"))
+    h1$xAxis(title = list(text="Individual Posts"))
     
     return(h1)
   })
