@@ -1,5 +1,3 @@
-library(httpuv)
-library(httr)
 library(rCharts)
 library(rjson)
 library(RCurl)
@@ -12,17 +10,9 @@ shinyServer(function(input, output){
   scope <- "basic"
   token <- "13705907.432555b.4ab9b08b546546dfa7cdd0342dcc5842"
   
-#   instagram <- oauth_endpoint(
-#     authorize="https://api.instagram.com/oauth/authorize",
-#     access="https://api.instagram.com/oauth/access_token",)
-#   my_app <- oauth_app(app_name, client_id, client_secret)
-#   
-#   ig_oauth <- oauth2.0_token(instagram, my_app, scope="basic",  type="application/x-www-form-urlencoded", cache=FALSE)
-#   tmp <- strsplit(toString(names(ig_oauth$credentials)), '"')
-#   token <- tmp[[1]][4]
-  
   output$plot <- renderChart({
-    user_url <- paste0("https://api.instagram.com/v1/users/search?q=", input$username, "&access_token=", token)
+    username <- input$username
+    user_url <- paste0("https://api.instagram.com/v1/users/search?q=", username, "&access_token=", token)
     user_info <- fromJSON(getURL(user_url), unexpected.escape="keep")
   
     user_profile <- user_info$data[[1]]
@@ -47,12 +37,11 @@ shinyServer(function(input, output){
       likes_comments_df$date[i] <- toString(as.POSIXct(as.numeric(recent_posts[[i]]$created_time), origin="1970-01-01"))
     }
     
-    m1 <- mPlot(x = "date", y = c("likes", "comments"), type = "Line", data = likes_comments_df)
     h1 <- Highcharts$new()
     h1$set(dom="plot")
     h1$chart(type="spline")
     h1$title(text="Likes and Comments")
-    h1$subtitle(text=paste0(picture_number, " Most Recent Posts"))
+    h1$subtitle(text=paste0(picture_number, " Most Recent Posts by ", username))
     h1$series(data=likes_comments_df$likes,name="Likes")
     h1$series(data=likes_comments_df$comments,name="Comments")
     h1$yAxis(title = list(text="Number of Interactions"))
