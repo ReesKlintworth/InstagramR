@@ -11,6 +11,9 @@ shinyUI(fluidPage(
   ),
   
   mainPanel(
-    showOutput("plot", "highcharts")
+    tabsetPanel(
+      tabPanel("Plot", showOutput("plot", "highcharts")),
+      tabPanel("Map", showOutput("map", "leaflet"))
+    )
   )
 ))
