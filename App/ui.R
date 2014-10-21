@@ -12,8 +12,9 @@ shinyUI(fluidPage(
   
   mainPanel(
     tabsetPanel(
-      tabPanel("Plot", showOutput("plot", "highcharts")),
-      tabPanel("Map", showOutput("map", "leaflet"))
+      tabPanel("User Plot", showOutput("plot", "highcharts")),
+      tabPanel("User Map", showOutput("map", "leaflet")),
+      tabPanel("Hashtag Map", showOutput("map2", "leaflet"))
     )
   )
 ))

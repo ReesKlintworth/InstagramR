@@ -85,4 +85,28 @@ shinyServer(function(input, output){
     }
     map
   })
+  
+  output$map2 <- renderMap({
+    tag <- "rkadekicks"
+    recent_url <- paste0("https://api.instagram.com/v1/tags/", tag, "/media/recent?access_token=", token)
+    
+    recent_posts <- rev(fromJSON(getURL(recent_url), unexpected.escape="keep")$data)
+    
+    map <- Leaflet$new()
+    for (i in 1:length(recent_posts))
+    {
+      if (!is.null(recent_posts[[i]]$location))
+      {
+        latitude <- recent_posts[[i]]$location$latitude
+        longitude <- recent_posts[[i]]$location$longitude
+        map$setView(c(latitude, longitude), zoom=4)
+        map$marker(c(latitude, longitude), bindPopup = paste0('<a href="',recent_posts[[i]]$link,'" target="_blank">View image</a>'))
+      }
+      else
+      {
+        map$setView(c(0,0), zoom=1)
+      }
+    }
+    map
+  })
 })
