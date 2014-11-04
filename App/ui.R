@@ -6,14 +6,15 @@ shinyUI(fluidPage(
   
   sidebarPanel(
     textInput("username", "Instagram Username:", "rkade93"),
-    numericInput("picture_number", "How many pictures?", 20, min=1, max=33),
+    numericInput("picture_number", "How many pictures?", 20, min=1),
     submitButton("Submit")
   ),
   
   mainPanel(
     tabsetPanel(
-      tabPanel("Plot", showOutput("plot", "highcharts")),
-      tabPanel("Map", showOutput("map", "leaflet"))
+      tabPanel("User Plot", showOutput("plot", "highcharts")),
+      tabPanel("User Map", showOutput("map", "leaflet")),
+      tabPanel("Hashtag Map", showOutput("map2", "leaflet"))
     )
   )
 ))
