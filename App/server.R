@@ -75,24 +75,39 @@ shinyServer(function(input, output){
     user_id <- user_profile$id
     
     picture_number <- input$picture_number
-    #if (picture_number > 33)
-    #{
-    #  picture_number <- 33
-    #}
     
-    recent_url = paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?client_id=", client_id, "&count=", picture_number, "&min_timestamp=0")
-    recent_posts <- rev(fromJSON(getURL(recent_url), unexpected.escape="keep")$data)
+    urls <- ceiling(picture_number / 20)
+    
+    next_url <- paste0("https://api.instagram.com/v1/users/", user_id, "/media/recent/?client_id=",client_id)
+    
+    recent_pictures <- list()
+    counter = 0
+    for(counter in 1:urls)
+    {
+      if (!is.null(next_url))
+      {
+        if (counter == urls && picture_number%%20 != 0)
+        {
+          next_url <- paste0(next_url, "&count=", picture_number%%20)
+        }
+        recent_posts <- fromJSON(getURL(next_url), unexpected.escape="keep")
+        recent_pictures <- append(recent_pictures, recent_posts$data)
+        next_url <- recent_posts$pagination$next_url
+      }
+    }
+    recent_pictures <- rev(recent_pictures)
+    picture_number <- length(recent_pictures)
     
     map <- Leaflet$new()
     
-    for (i in 1:length(recent_posts))
+    for (i in 1:length(recent_pictures))
     {
-      if (!is.null(recent_posts[[i]]$location))
+      if (!is.null(recent_pictures[[i]]$location))
       {
-        latitude <- recent_posts[[i]]$location$latitude
-        longitude <- recent_posts[[i]]$location$longitude
+        latitude <- recent_pictures[[i]]$location$latitude
+        longitude <- recent_pictures[[i]]$location$longitude
         map$setView(c(latitude, longitude), zoom=4)
-        map$marker(c(latitude, longitude), bindPopup = paste0('<a href="',recent_posts[[i]]$link,'" target="_blank">View image</a>'))
+        map$marker(c(latitude, longitude), bindPopup = paste0('<a href="',recent_pictures[[i]]$link,'" target="_blank">View image</a>'))
       }
       else
       {
