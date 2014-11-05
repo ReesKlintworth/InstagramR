@@ -1,11 +1,12 @@
 shinyServer(function(input, output){
   
   observe({
-    if(input$update_user_data == 0 && !initial) {
+    if(input$update_user_data == 0 && !initial_user) {
       return()
     }
     isolate({
-      initial = TRUE
+      initial_user = FALSE
+      username <- input$username
       recent_pictures <- recent_pictures_for_user(input)
       picture_number <- length(recent_pictures)
       output$user_chart <- renderChart({
@@ -52,27 +53,33 @@ shinyServer(function(input, output){
     })
   })
   
-  output$map2 <- renderMap({
-    tag <- "rkadekicks"
-    recent_url <- paste0("https://api.instagram.com/v1/tags/", tag, "/media/recent?access_token=", token)
-    
-    recent_posts <- rev(fromJSON(getURL(recent_url), unexpected.escape="keep")$data)
-    
-    map <- Leaflet$new()
-    for (i in 1:length(recent_posts))
+  observe({
+    if (input$update_hashtag_data == 0 && !initial_hashtag)
     {
-      if (!is.null(recent_posts[[i]]$location))
-      {
-        latitude <- recent_posts[[i]]$location$latitude
-        longitude <- recent_posts[[i]]$location$longitude
-        map$setView(c(latitude, longitude), zoom=4)
-        map$marker(c(latitude, longitude), bindPopup = paste0('<a href="',recent_posts[[i]]$link,'" target="_blank">View image</a>'))
-      }
-      else
-      {
-        map$setView(c(0,0), zoom=1)
-      }
+      return()
     }
-    map
+    
+    isolate({
+      initial_hashtag = FALSE
+      recent_pictures <- recent_pictures_for_hashtag(input)
+      output$map2 <- renderMap({
+        map <- Leaflet$new()
+        for (i in 1:length(recent_pictures))
+        {
+          if (!is.null(recent_pictures[[i]]$location))
+          {
+            latitude <- recent_pictures[[i]]$location$latitude
+            longitude <- recent_pictures[[i]]$location$longitude
+            map$setView(c(latitude, longitude), zoom=4)
+            map$marker(c(latitude, longitude), bindPopup = paste0('<a href="',recent_pictures[[i]]$link,'" target="_blank">View image</a>'))
+          }
+          else
+          {
+            map$setView(c(0,0), zoom=1)
+          }
+        }
+        map
+      })
+    })
   })
 })

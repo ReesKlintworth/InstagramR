@@ -3,7 +3,6 @@ client_id <- "432555bd340f486281d3a28bd4bd3a9a"
 client_secret <- "33220c4d9e9d4e8ab513b21fd842f06e"
 scope <- "basic"
 token <- "13705907.432555b.4ab9b08b546546dfa7cdd0342dcc5842"
-initial = TRUE
 
 recent_pictures_for_user <- function(input){
   username <- input$username
@@ -36,4 +35,10 @@ recent_pictures_for_user <- function(input){
     }
   }
   recent_pictures <- rev(recent_pictures)
+}
+
+recent_pictures_for_hashtag <- function(input){
+  tag <- input$hashtag
+  recent_url <- paste0("https://api.instagram.com/v1/tags/", tag, "/media/recent?access_token=", token)
+  recent_posts <- rev(fromJSON(getURL(recent_url), unexpected.escape="keep")$data)
 }

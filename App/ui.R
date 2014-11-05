@@ -13,7 +13,11 @@ shinyUI(fluidPage(
           tabPanel("User Map", showOutput("user_map", "leaflet"))
         )
       ),
-      tabPanel("Hashtag", showOutput("map2", "leaflet"))
+      tabPanel("Hashtag",
+        textInputRow("hashtag", "Hashtag:", "RkadeKicks"),
+        actionButtonSeparateRow("update_hashtag_data", "Update Data"),
+        tags$div(style="margin-bottom:15px;"),
+        showOutput("map2", "leaflet"))
     ), width=12
   )
 ))
