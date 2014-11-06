@@ -7,7 +7,7 @@ textInputRow<-function (inputId, label, value){
 numericInputRow <- function (inputId, label, value, min){
   div(style="display:inline-block",
       tags$label(label, `for` = inputId),
-      tags$input(id = inputId, type = "number", value = value, min = min, step = 1, class = "input-small"))
+      tags$input(id = inputId, type = "number", value = value, min = min, step = 1, class = "input-medium"))
 }
 
 actionButtonSeparateRow <- function(inputId, value){
