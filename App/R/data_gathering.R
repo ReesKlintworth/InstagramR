@@ -39,6 +39,17 @@ recent_pictures_for_user <- function(input){
 
 recent_pictures_for_hashtag <- function(input){
   tag <- input$hashtag
-  recent_url <- paste0("https://api.instagram.com/v1/tags/", tag, "/media/recent?access_token=", token)
-  recent_posts <- rev(fromJSON(getURL(recent_url), unexpected.escape="keep")$data)
+  recent_pictures <- list()
+  next_url <- paste0("https://api.instagram.com/v1/tags/", tag, "/media/recent?access_token=", token)
+  counter = 0
+  for(counter in 1:5)
+  {
+    if(!is.null(next_url))
+    {
+      recent_posts <- fromJSON(getURL(next_url), unexpected.escape="keep")
+      recent_pictures <- append(recent_pictures, recent_posts$data)
+      next_url <- recent_posts$pagination$next_url
+    }
+  }
+  recent_pictures <- rev(recent_pictures)
 }

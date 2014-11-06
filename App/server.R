@@ -70,14 +70,10 @@ shinyServer(function(input, output){
           {
             latitude <- recent_pictures[[i]]$location$latitude
             longitude <- recent_pictures[[i]]$location$longitude
-            map$setView(c(latitude, longitude), zoom=4)
             map$marker(c(latitude, longitude), bindPopup = paste0('<a href="',recent_pictures[[i]]$link,'" target="_blank">View image</a>'))
           }
-          else
-          {
-            map$setView(c(0,0), zoom=1)
-          }
         }
+        map$setView(c(0,0), zoom=1)
         map
       })
     })
