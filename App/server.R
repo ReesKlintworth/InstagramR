@@ -35,9 +35,11 @@ shinyServer(function(input, output){
         map <- Leaflet$new()
         map$setView(c(0,0), zoom=1)
         locations <- get_locations(recent_pictures)
-        apply(locations, 1, function(location){
-          map$marker(c(location$Latitude[[1]], location$Longitude[[1]]), bindPopup = location$Text)
-        })
+        if(!is.null(locations)){
+          apply(locations, 1, function(location){
+            map$marker(c(location$Latitude[[1]], location$Longitude[[1]]), bindPopup = location$Text)
+          })
+        }
         map
       })
     })
@@ -56,10 +58,11 @@ shinyServer(function(input, output){
         map <- Leaflet$new()
         map$setView(c(0,0), zoom=1)
         locations <- get_locations(recent_pictures)
-        apply(locations, 1, function(location){
-          print(location)
-          map$marker(c(location$Latitude[[1]], location$Longitude[[1]]), bindPopup = location$Text)
-        })
+        if(!is.null(locations)){
+          apply(locations, 1, function(location){
+            map$marker(c(location$Latitude[[1]], location$Longitude[[1]]), bindPopup = location$Text)
+          })
+        }
         map
       })
     })

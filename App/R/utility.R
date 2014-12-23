@@ -16,8 +16,10 @@ get_locations <- function(recent_posts){
       urls <- c(urls, paste0('<div><a href="',recent_posts[[i]]$link,'" target="_blank">View image</a></div>'))
     }
   }
-  locations <- data.frame(unlist(names), latitudes, longitudes, urls)
-  colnames(locations) <- c("Name", "Latitude", "Longitude", "url")
+  locations <- data.frame(Name=unlist(names), Latitude=latitudes, Longitude=longitudes, Url=urls)
+  if(nrow(locations) == 0){
+    return(NULL)
+  }
   unique_locations <- as.list(levels(unique(locations$Name)))
   
   unique_location_information <- as.data.frame(t(sapply(unique_locations, function(unique_location){
@@ -38,6 +40,5 @@ get_locations <- function(recent_posts){
     row <- list(Name=name, Latitude=latitude, Longitude=longitude, Text=text)
     row
   })), stringsAsFactors=FALSE)
-  print(unique_location_information)
   unique_location_information
 }
