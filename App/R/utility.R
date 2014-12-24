@@ -6,7 +6,7 @@ get_locations <- function(recent_posts){
   urls <- vector()
   for (i in 1:length(recent_posts))
   {
-    if (!is.null(recent_posts[[i]]$location))
+    if (!is.null(recent_posts[[i]]$location) && !is.null(recent_posts[[i]]$location$name))
     {
       names <- c(names, recent_posts[[i]]$location$name)
       latitude <- recent_posts[[i]]$location$latitude
