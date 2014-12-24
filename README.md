@@ -5,4 +5,9 @@ Analyze Instagram statistics using R and Instagram's API.
 
 This project is currently deployed via [shinyapps](http://rees.shinyapps.io/InstagramR)
 
-Currently, has the ability to view a graph of likes and comments for the most recent posts by any public Instagram user. More statistics and analysis will be coming in the future.
+**Current Features**
+* Graph likes and comments for any public Instagram users
+* Map recents posts for any public Instagram user
+* Map recent posts for a particular Hashtag
+
+More statistics and analysis will be coming in the future.
