@@ -1,5 +1,6 @@
 
-get_locations <- function(recent_posts){
+get_locations <- function(recent_posts, progress){
+  progress$set(message="Getting Location Data", value=1)
   names <- list()
   latitudes <- vector()
   longitudes <- vector()

@@ -1,5 +1,8 @@
-shinyUI(navbarPage("InstagramR",
+shinyUI(
+  navbarPage(
+  "InstagramR",
   tabPanel("User Analysis",
+    progressInit(),
     textInputRow("username", "Instagram Username:", "rkade93"),
     numericInputRow("picture_number", "How many pictures?", 20, min=1),
     actionButtonSeparateRow("update_user_data", "Update Data"),
