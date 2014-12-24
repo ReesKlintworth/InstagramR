@@ -23,7 +23,7 @@ get_locations <- function(recent_posts){
   unique_locations <- as.list(levels(unique(locations$Name)))
   
   unique_location_information <- as.data.frame(t(sapply(unique_locations, function(unique_location){
-    text <- ""
+    text <- paste0("<div><p>",unique_location,"</p></div>")
     name <- unique_location
     latitude <- NULL
     longitude <- NULL
